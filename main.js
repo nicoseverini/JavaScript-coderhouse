@@ -48,7 +48,7 @@ const savelocal = () =>{
 /*
 pre: -
 post:-Genera div segun sus productos dentro del carrito
-     -mustra en totalCarrito precioTotal
+-mustra en totalCarrito precioTotal
 */ 
 function actualizarHTML(){
   listaProductos.innerHTML = "";
@@ -75,23 +75,23 @@ pre:Tener un producto
 post:-Agrega al carrito el producto si dentro del carrito hay menos elementos q el tope_carrito
      -Suma a precioTotal el precio del producto agregado
      -Ejecuta funcion actualizarHTML()
-*/      
-function agregar(producto){
-  if(carrito.length < tope_carrito){
-    carrito.push(producto);
-    precioTotal += producto.precio;
-    actualizarHTML();
-    savelocal();
-    return;
-  }  
-  alert("El espacio del carrito esta lleno");
+     */      
+    function agregar(producto){
+      if(carrito.length < tope_carrito){
+        carrito.push(producto);
+        precioTotal += producto.precio;
+        actualizarHTML();
+        savelocal();
+        return;
+      }  
+  alertar(`El espacio del carrito esta lleno`);
 }  
 
 /*
 pre:Tener un producto
 post:-Resta a preciototal el precio del producto quitado
-     -Quita un elemento del carrito segun su nombre 
-     -Ejecuta funcion actualizarHTML()
+-Quita un elemento del carrito segun su nombre 
+-Ejecuta funcion actualizarHTML()
 */      
 function quitar(nombreProducto){
   const productoEncontrado = carrito.find((producto) => producto.nombre == nombreProducto);
@@ -104,8 +104,8 @@ function quitar(nombreProducto){
 /*
 pre: -
 post:-Quita todos los elementos q se encuentren en el carrito
-     -precioTotal es 0 
-     -Ejecuta funcion actualizarHTML()
+-precioTotal es 0 
+-Ejecuta funcion actualizarHTML()
 */     
 function quitarTodo(){
   carrito.splice(0,carrito.length);
@@ -117,21 +117,40 @@ function quitarTodo(){
 /*
 pre: -
 post:-salta cartel detalles compra sino salta cartel no tienes productos
-     -precioTotal es 0
-     -Ejecuta funcion actualizarHTML()
+-precioTotal es 0
+-Ejecuta funcion actualizarHTML()
 */
 function comprar(){
   if(carrito.length >= 1){
     carrito.splice(0,carrito.length);
-    alert(`Usted a comprado los productos el precio total es ${precioTotal} `);
+    alertar(`El producto fue comprado, su costo fue de : $${precioTotal}`);
     precioTotal = 0;
     actualizarHTML();
     savelocal();
     return;
   }  
-  alert("No tienes productos que comprar");
+  alertar(`No tiene productos en el carrito`);
 }  
-//------------------------------------------------------------------------------------
+
+
+//botones de alerta 
+const textAlert = document.getElementById('texto_alerta');
+const alerts = document.getElementById('alertas');
+
+/*
+pre: texto
+post: alerta con el texto y un boton de cierre
+*/
+function alertar(p){
+  textAlert.innerHTML = "";
+  textAlert.innerHTML += p
+  //alerta y cuando se dese tocar el boton y cerrar
+  alerts.style.display = "block";
+  botonCerrarAlerta.onclick = () =>{
+    alerts.style.display = "none"
+  }
+}
+//-------------------------------------------------------------------------------------
 
 //onclicks de productos
 const botonFenderElectrica = document.getElementById('fender_electrica')
@@ -158,6 +177,15 @@ const botonGibsonClasica = document.getElementById('gibson_clasica')
 botonGibsonClasica.onclick = () =>{
   agregar(gibsonClasica);
 };
+const botonComprarCarrito = document.getElementById('button_comprar_carrito')
+botonComprarCarrito.onclick = () =>{
+  comprar();
+}
+const botonQuitarCarrito = document.getElementById('button_quitar_carrito')
+botonQuitarCarrito.onclick = () =>{
+  quitarTodo()
+}
+const botonCerrarAlerta = document.getElementById('button_close')
 
 //Buscador
 const inputbuscar = document.getElementById('buscador');
