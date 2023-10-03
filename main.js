@@ -1,47 +1,80 @@
+//carrito en el storage
+const savelocal = () =>{
+  localStorage.setItem("carrito",JSON.stringify(carrito))
+  localStorage.setItem("precioTotal",JSON.stringify(precioTotal))
+}
+//menu carrito
 const carrito_button = document.getElementById('carrito_button');
 const carrito_menu = document.getElementById('carrito_menu');
 
+//Abir y cerrar carrito cuando hago click
 carrito_button.addEventListener('click', () => {
   carrito_menu.classList.toggle('abierto');
-});
-// ---------------------------------------
+});  
+
+//Creo un constructor de mis productos
 class producto{
   constructor(nombre, precio){
     this.nombre = nombre;
     this.precio = precio;
-  }
-}
+  }  
+}  
 
-//productos 
+//Productos 
 const fenderElectrica = new producto("Fender|Electrica", 1199);
-const fenderElectroacustica = new producto("Fender|Electroacustica", 899);
+const fenderAcustica = new producto("Fender|Acustica", 899);
 const fenderClasica = new producto("Fender|Clasica", 419);
+const gibsonElectrica = new producto("Gibson|Electrica", 2999);
+const gibsonAcustica = new producto("Gibson|Acustica", 1799);
+const gibsonClasica = new producto("Gibson|Clasica", 1000);
 
-const carrito = [];
-
-let precioTotal = 0;
+//carrito y su tope
+const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const tope_carrito = 16;
+//precio total
+let precioTotal = JSON.parse(localStorage.getItem("precioTotal")) || 0;
 
 const totalCarrito = document.querySelector("#total_carrito span");
 totalCarrito.innerText = precioTotal;
+//lista productos
 const listaProductos = document.getElementById("lista_productos_carrito");
-
+actualizarHTML();
+/*
+pre:Tener un producto
+post:-Agrega al carrito el producto si dentro del carrito hay menos elementos q el tope_carrito
+     -Suma a precioTotal el precio del producto agregado
+     -Ejecuta funcion actualizarHTML()
+*/      
 function agregar(producto){
-  if(carrito.length < 16){
+  if(carrito.length < tope_carrito){
     carrito.push(producto);
     precioTotal += producto.precio;
     actualizarHTML();
+    savelocal();
     return;
-  }
+  }  
   alert("El espacio del carrito esta lleno");
-}
+}  
 
+/*
+pre:Tener un producto
+post:-Resta a preciototal el precio del producto quitado
+     -Quita un elemento del carrito segun su nombre 
+     -Ejecuta funcion actualizarHTML()
+*/      
 function quitar(nombreProducto){
   const productoEncontrado = carrito.find((producto) => producto.nombre == nombreProducto);
   precioTotal -= productoEncontrado.precio;
   carrito.splice(carrito.indexOf(productoEncontrado), 1);
   actualizarHTML();
-}
+  savelocal();
+}  
 
+/*
+pre: -
+post:-Genera div segun sus productos dentro del carrito
+-mustra en totalCarrito precioTotal
+*/ 
 function actualizarHTML(){
   listaProductos.innerHTML = "";
   let inicial = 0
@@ -58,23 +91,82 @@ function actualizarHTML(){
     </div>
     `;
     listaProductos.innerHTML += div;
-  }
+  }  
   totalCarrito.innerText = precioTotal;
-}
+}  
 
+/*
+pre: -
+post:-Quita todos los elementos q se encuentren en el carrito
+     -precioTotal es 0 
+     -Ejecuta funcion actualizarHTML()
+*/     
 function quitarTodo(){
   carrito.splice(0,carrito.length);
   precioTotal = 0;
   actualizarHTML();
-}
+  savelocal();
+}  
 
+/*
+pre: -
+post:-salta cartel detalles compra sino salta cartel no tienes productos
+-precioTotal es 0
+-Ejecuta funcion actualizarHTML()
+*/
 function comprar(){
   if(carrito.length >= 1){
     carrito.splice(0,carrito.length);
     alert(`Usted a comprado los productos el precio total es ${precioTotal} `);
     precioTotal = 0;
     actualizarHTML();
+    savelocal();
     return;
-  }
+  }  
   alert("No tienes productos que comprar");
-}
+}  
+
+//onclicks de productos
+const botonFenderElectrica = document.getElementById('fender_electrica')
+botonFenderElectrica.onclick = () =>{
+  agregar(fenderElectrica);
+};
+const botonFenderAcutstica = document.getElementById('fender_acustica')
+botonFenderAcutstica.onclick = () =>{
+  agregar(fenderAcustica);
+};
+const botonFenderClasica = document.getElementById('fender_clasica')
+botonFenderClasica.onclick = () =>{
+  agregar(fenderClasica);
+};
+const botonGibsonElectrica = document.getElementById('gibson_electrica')
+botonGibsonElectrica.onclick = () =>{
+  agregar(gibsonElectrica);
+};
+const botonGibsonAcustica = document.getElementById('gibson_acustica')
+botonGibsonAcustica.onclick = () =>{
+  agregar(gibsonAcustica);
+};
+const botonGibsonClasica = document.getElementById('gibson_clasica')
+botonGibsonClasica.onclick = () =>{
+  agregar(gibsonClasica);
+};
+
+//Buscador
+const inputbuscar = document.getElementById('buscador');
+const cards = document.querySelectorAll('.card');
+
+inputbuscar.addEventListener('input', function filterCards(){
+  const terminoBuscado = (inputbuscar.value).toLowerCase();
+
+  cards.forEach((card) =>{
+    //Buscar en cada una de las cards sus respectivos nombres 
+    const nameCard = card.querySelector('.name_card').textContent.toLowerCase();
+    //si esos nombres coinsiden con los del terminoBuscado aplica estilos a las respectivas card q estan dentro de cards
+    if (nameCard.includes(terminoBuscado)){
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});

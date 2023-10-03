@@ -5,77 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GuitarsCompany</title>
   <link rel="stylesheet" href="./style.css">
+  <link rel="shortcut icon" href="./imagenes/rickroleado1.webp">
 </head>
-<body>
+<body id="body">
   <header>
     <div class="logo">
-      <h1><a href="index.html">GuitarsCompany</a></h1>
+      <h1><a href="#body">GuitarsCompany</a></h1>
     </div>
     <nav>
       <ul>
-        <li><a href="">Electrica</a></li>
-        <li class="electroacustica"><a href="">Electroacustica</a></li>
-        <li><a href="">Clasica</a></li>
+        <li class="guitarras"><a href="#guitars">Chose Guitars</a></li>
       </ul>
     </nav>
     <div class="carrito_button_container">
       <button id="carrito_button">
         <img class="carrito_img" src="./imagenes/shopping_cart_FILL0_wght400_GRAD0_opsz24.png" alt="carrito">
-        <p>CARRITO</p>
+        <p>CART</p>
       </button>
     </div>
   </header>
   <div id="carrito_menu" class="cerrado">
-    <h2>Carrito</h2>
+    <h2>Cart</h2>
     <div id="lista_productos_carrito">
-      <!--
-      <div class="producto_carrito">
-        <div class="info_producto_carrito">
-          <span class="cantidad_producto_carrito">1</span>
-          <p class="titula_produto_carrito">Fender | Electrica</p>
-          <span class="precio_producto_carrito">$2304</span>
-          <button id="boton_quitar_carrito"><p>X</p></button>
-        </div>
-      </div>
-      -->
     </div>
     <h2 id="total_carrito">
       total: <span></span>
     </h2>
     <section class="botones">
       <button onclick="comprar()" id="button_comprar_carrito" class="botones_opciones_carrito">
-        Comprar
+        Buy
       </button>
       <button onclick="quitarTodo()" id="button_quitar_carrito" class="botones_opciones_carrito">
-        Quitar todo
+        Remove all
       </button>
     </section>
   </div>
-  <main>
-    <div class="titulo_productos">
-      <h1>Guitarras</h1>
-    </div>
-    <div class="container">
-      <div class="card producto1">
-        <img src="./imagenes/0147312300_fen_ins_frt_1_rr.webp" alt="">
-        <h4>Fender | Electrica</h4>
-        <h5>$1199</h5>
-        <button onclick="agregar(fenderElectrica)">Sumar al carrito</button>
+  <main id="main">
+    <section class="section_one">
+      <div class="section_one_about">
+        <h1>GuitarsCompany</h1>
+        <p>Our commitment is to offer you not only high quality products, but also a unique experience.</p>
+        <p>Our team of experts is ready to advise you on choosing the perfect guitar for you, and we are here to accompany you every step of your musical journey.</p>
       </div>
-      <div class="card producto2">
-        <img src="./imagenes/D_NQ_NP_787017-MLA54876982383_042023-O.webp" alt="">
-        <h4>Fender | Electroacustica</h4>
-        <h5>$899</h5>
-        <button onclick="agregar(fenderElectroacustica)">Sumar al carrito</button>
+    </section>
+    <section class="section_two">
+      <div class="titulo_productos" id="guitars">
+        <h1>Guitars</h1>
       </div>
-      <div class="card producto3">
-        <img src="./imagenes/0e932ad8-096-2714-221-01.jpg" alt="">
-        <h4>Fender | Clasica</h4>
-        <h5>$419</h5>
-        <button onclick="agregar(fenderClasica)">Sumar al carrito</button>
+      <div class="guitar_options">
+          <input placeholder="What guitar are you looking for?" type="text" name="text" class="input" id="buscador">
       </div>
-    </div>
+      <div class="container">
+        <div class="card producto1">
+          <img src="./imagenes/0147312300_fen_ins_frt_1_rr.webp" alt="">
+          <div class="name_card">
+            <h4>Fender Electrica</h4>
+            <h4>  Vintera® II '60s </h4>
+          </div>
+          <h5>$1199</h5>
+          <button id="fender_electrica">Sumar al carrito</button>
+        </div>
+        <div class="card producto2">
+          <img src="./imagenes/D_NQ_NP_787017-MLA54876982383_042023-O.webp" alt="">
+          <div class="name_card">
+            <h4>Fender Acustica</h4>
+            <h4>  FA-135 Concert </h4>
+          </div>
+          <h5>$899</h5>
+          <button id="fender_acustica">Sumar al carrito</button>
+        </div>
+        <div class="card producto3">
+          <img src="./imagenes/0e932ad8-096-2714-221-01.jpg" alt="">
+          <div class="name_card">
+            <h4>Fender Clasica</h4>
+            <h4>  ESC-80 </h4>
+          </div>
+          <h5>$419</h5>
+          <button id="fender_clasica">Sumar al carrito</button>
+        </div>
+        <div class="card producto4">
+          <img src="./imagenes/GIB-Electrica.jpg" alt="">
+          <div class="name_card">
+            <h4>Gibson Electrica</h4>
+            <h4>  Les Paul Standard '50s </h4>
+          </div>
+          <h5>$2999</h5>
+          <button id="gibson_electrica">Sumar al carrito</button>
+        </div>
+        <div class="card producto5">
+          <img src="./imagenes/gibson-g-bird-generation.jpg" alt="">
+          <div class="name_card">
+            <h4>Gibson Acustica</h4>
+            <h4>  G-Bird </h4>
+          </div>
+          <h5>$1799</h5>
+          <button id="gibson_acustica">Sumar al carrito</button>
+        </div>
+        <div class="card producto6">
+          <img src="./imagenes/k039_01__71759.jpg" alt="">
+          <div class="name_card">
+            <h4>Gibson Clasica</h4>
+            <h4>  Chet Atkins CEC </h4>
+          </div>
+          <h5>$1000</h5>
+          <button id="gibson_clasica">Sumar al carrito</button>
+        </div>
+      </div>
+    </section>
   </main> 
+  <footer>
+    <p> Ⓒ 2023. GuitarsCompany. </p>
+    <p> Reservados todos los derechos ar | prod | ..... | 01/11/2023-22:08:33:345</p>
+  </footer>
   <script src="./main.js"></script>
 </body>
 </html>

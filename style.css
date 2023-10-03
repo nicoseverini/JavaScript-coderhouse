@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   font-family:Arial, Helvetica, sans-serif ;
+  scroll-behavior: smooth;
 }
 
 a{
@@ -64,11 +65,6 @@ nav ul li {
 nav ul li a:hover{
   padding-bottom: 5px;
   border-bottom:2px solid black ;
-}
-
-.electroacustica{
-  border-left:1px solid black ;
-  border-right:1px solid black;
 }
 
 .carrito_button_container{
@@ -169,7 +165,6 @@ padding-top: 7px;
   color: rgb(187, 3, 3);
 }
 
-
 .cerrado{
   right: -700px;
 }
@@ -180,9 +175,34 @@ padding-top: 7px;
 
 main{
   width: auto;
-  height: 800px;
-  padding-top: 100px;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: auto;
+  background-color: black;
+}
+
+.section_one{
+  width: 100%;
+  height: 900px;
+  background-image: url(./imagenes/guitar-background1.jpg) ;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-flow: column nowrap;
+}
+
+
+.section_one h1{
+  font-size: 100px;
+  padding-bottom: 40px;
+}
+
+.section_one_about{
+  margin-left:200px;
+  border-left: 3px solid white;
+  padding: 20px;
+}
+
+.section_one_about p{
+  font-size:20px ;
 }
 
 .titulo_productos{
@@ -191,10 +211,47 @@ main{
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-size: 30px;
 }
 
 .titulo_productos h1{
   margin: 20px;
+}
+
+.guitar_options{
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 30px;
+}
+
+.input {
+  width: 100%;
+  max-width: 500px;
+  height: 25px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+  font-size: 20px;
+}
+
+.input:hover {
+  border: 2px solid lightgrey;
+  box-shadow: 0px 0px 20px -17px;
+}
+
+.input:active {
+  transform: scale(0.95);
+}
+
+.input:focus {
+  border: 2px solid grey;
 }
 
 .container{
@@ -205,6 +262,7 @@ main{
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
+  padding-bottom: 150px;
 }
 
 .container .card{
@@ -229,7 +287,7 @@ main{
   height: 310px;
 }
 
-.container .card h4{
+.name_card{
   font-weight: 600;
   padding: 10px;
 }
@@ -250,4 +308,14 @@ main{
 
 .container .card button:hover{
   text-shadow: 0.2px 0.2px #1268a1;
+}
+
+footer{
+  padding: 50px 0px;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-flow: column wrap;
+  text-align: center;
 }
