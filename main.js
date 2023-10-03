@@ -1,13 +1,7 @@
-//carrito en el storage
-const savelocal = () =>{
-  localStorage.setItem("carrito",JSON.stringify(carrito))
-  localStorage.setItem("precioTotal",JSON.stringify(precioTotal))
-}
 //menu carrito
 const carrito_button = document.getElementById('carrito_button');
 const carrito_menu = document.getElementById('carrito_menu');
-
-//Abir y cerrar carrito cuando hago click
+//Abir y cerrar carrito cuando se haga click
 carrito_button.addEventListener('click', () => {
   carrito_menu.classList.toggle('abierto');
 });  
@@ -31,14 +25,51 @@ const gibsonClasica = new producto("Gibson|Clasica", 1000);
 //carrito y su tope
 const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 const tope_carrito = 16;
+
 //precio total
 let precioTotal = JSON.parse(localStorage.getItem("precioTotal")) || 0;
-
 const totalCarrito = document.querySelector("#total_carrito span");
 totalCarrito.innerText = precioTotal;
+
 //lista productos
 const listaProductos = document.getElementById("lista_productos_carrito");
 actualizarHTML();
+
+//-----------------------------------funciones-principales-------------------------------------
+/*
+pre: - 
+post:Datos guardados de carrito y preciototal
+*/
+const savelocal = () =>{
+  localStorage.setItem("carrito",JSON.stringify(carrito))
+  localStorage.setItem("precioTotal",JSON.stringify(precioTotal))
+}
+
+/*
+pre: -
+post:-Genera div segun sus productos dentro del carrito
+     -mustra en totalCarrito precioTotal
+*/ 
+function actualizarHTML(){
+  listaProductos.innerHTML = "";
+  let inicial = 0
+  for(const producto of carrito){
+    inicial++;
+    const div = `
+    <div class="producto_carrito">
+    <div class="info_producto_carrito">
+    <span class="cantidad_producto_carrito">${inicial}</span>
+    <p class="titula_produto_carrito">${producto.nombre}</p>
+    <span class="precio_producto_carrito">$${producto.precio}</span>
+    <button onclick="quitar('${producto.nombre}')" id="boton_quitar_carrito"><p>X</p></button>
+    </div>
+    </div>
+    `;
+    listaProductos.innerHTML += div;
+  }  
+  totalCarrito.innerText = precioTotal;
+}  
+
 /*
 pre:Tener un producto
 post:-Agrega al carrito el producto si dentro del carrito hay menos elementos q el tope_carrito
@@ -72,31 +103,6 @@ function quitar(nombreProducto){
 
 /*
 pre: -
-post:-Genera div segun sus productos dentro del carrito
--mustra en totalCarrito precioTotal
-*/ 
-function actualizarHTML(){
-  listaProductos.innerHTML = "";
-  let inicial = 0
-  for(const producto of carrito){
-    inicial++;
-    const div = `
-    <div class="producto_carrito">
-    <div class="info_producto_carrito">
-    <span class="cantidad_producto_carrito">${inicial}</span>
-    <p class="titula_produto_carrito">${producto.nombre}</p>
-    <span class="precio_producto_carrito">$${producto.precio}</span>
-    <button onclick="quitar('${producto.nombre}')" id="boton_quitar_carrito"><p>X</p></button>
-    </div>
-    </div>
-    `;
-    listaProductos.innerHTML += div;
-  }  
-  totalCarrito.innerText = precioTotal;
-}  
-
-/*
-pre: -
 post:-Quita todos los elementos q se encuentren en el carrito
      -precioTotal es 0 
      -Ejecuta funcion actualizarHTML()
@@ -111,8 +117,8 @@ function quitarTodo(){
 /*
 pre: -
 post:-salta cartel detalles compra sino salta cartel no tienes productos
--precioTotal es 0
--Ejecuta funcion actualizarHTML()
+     -precioTotal es 0
+     -Ejecuta funcion actualizarHTML()
 */
 function comprar(){
   if(carrito.length >= 1){
@@ -125,6 +131,7 @@ function comprar(){
   }  
   alert("No tienes productos que comprar");
 }  
+//------------------------------------------------------------------------------------
 
 //onclicks de productos
 const botonFenderElectrica = document.getElementById('fender_electrica')
