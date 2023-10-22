@@ -1,7 +1,7 @@
 [
   {
     "id":1,
-    "tipo": "Electrica",
+    "tipo": "Electric",
     "marca": "Fender",
     "nombre": "Vintera® II 60s",
     "precio": 1199,
@@ -9,7 +9,7 @@
   },
   {
     "id":2,
-    "tipo": "Acustica",
+    "tipo": "Acoustic",
     "marca": "Fender",
     "nombre": "FA-135 Concert",
     "precio": 899,
@@ -17,7 +17,7 @@
   },
   {
     "id":3,
-    "tipo": "Clasica",
+    "tipo": "Classic",
     "marca": "Fender",
     "nombre": "ESC-80",
     "precio": 419,
@@ -25,7 +25,7 @@
   },
   {
     "id":4,
-    "tipo": "Electrica",
+    "tipo": "Electric",
     "marca": "Gibson",
     "nombre": "Les Paul Standard 50s",
     "precio": 2999,
@@ -33,7 +33,7 @@
   },
   {
     "id":5,
-    "tipo": "Acustica",
+    "tipo": "Acoustic",
     "marca": "Gibson",
     "nombre": "G-Bird",
     "precio": 1799,
@@ -41,7 +41,7 @@
   },
   {
     "id":6,
-    "tipo": "Clasica",
+    "tipo": "Classic",
     "marca": "Gibson",
     "nombre": "Chet Atkins CEC",
     "precio": 1000,
