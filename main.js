@@ -1,39 +1,36 @@
-//menu carrito
-const carrito_button = document.getElementById('carrito_button');
-const carrito_menu = document.getElementById('carrito_menu');
-//Abir y cerrar carrito cuando se haga click
-carrito_button.addEventListener('click', () => {
-  carrito_menu.classList.toggle('abierto');
-});  
-
 //Creo un constructor de mis productos
-class producto{
-  constructor(nombre, precio){
+class Producto{
+  constructor(id, tipo, marca, nombre, precio, imagen){
+    this.id = id;
+    this.tipo = tipo;
+    this.marca = marca;
     this.nombre = nombre;
     this.precio = precio;
+    this.imagen = imagen;
   }  
 }  
 
-//Productos 
-const fenderElectrica = new producto("Fender|Electrica", 1199);
-const fenderAcustica = new producto("Fender|Acustica", 899);
-const fenderClasica = new producto("Fender|Clasica", 419);
-const gibsonElectrica = new producto("Gibson|Electrica", 2999);
-const gibsonAcustica = new producto("Gibson|Acustica", 1799);
-const gibsonClasica = new producto("Gibson|Clasica", 1000);
+// todos los productos de nuestro catálogo
+class BaseDeDatos {
+  constructor() {
+    this.productos = [];
+    this.cargarRegistros();
+  }
+  
+  async cargarRegistros() {
+    const resultado = await fetch("./json/productos.json");
+    this.productos = await resultado.json();
+    cargarProductos(this.productos);
+  }
 
-//carrito y su tope
-const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-const tope_carrito = 16;
-
-//precio total
-let precioTotal = JSON.parse(localStorage.getItem("precioTotal")) || 0;
-const totalCarrito = document.querySelector("#total_carrito span");
-totalCarrito.innerText = precioTotal;
-
-//lista productos
-const listaProductos = document.getElementById("lista_productos_carrito");
-actualizarHTML();
+  traerRegistros() {
+    return this.productos;
+  }
+  
+  registroPorId(id) {
+    return this.productos.find((producto) => producto.id === id);
+  }
+}
 
 //-----------------------------------funciones-principales-------------------------------------
 /*
@@ -73,18 +70,31 @@ function actualizarHTML(){
 /*
 pre:Tener un producto
 post:-Agrega al carrito el producto si dentro del carrito hay menos elementos q el tope_carrito
-     -Suma a precioTotal el precio del producto agregado
-     -Ejecuta funcion actualizarHTML()
-     */      
-    function agregar(producto){
-      if(carrito.length < tope_carrito){
-        carrito.push(producto);
-        precioTotal += producto.precio;
-        actualizarHTML();
-        savelocal();
-        return;
-      }  
-  alertar(`El espacio del carrito esta lleno`);
+-Suma a precioTotal el precio del producto agregado
+-Ejecuta funcion actualizarHTML()
+*/      
+function agregar(producto){
+  if(carrito.length < tope_carrito){
+    carrito.push(producto);
+    precioTotal += producto.precio;
+    actualizarHTML();
+    savelocal();
+    return;
+  }
+  //alerta carrito lleno
+  Swal.fire({
+    title: 'The cart is full',
+    text: "Do you want to buy the entire cart?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, buy'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      comprar();
+    }
+  })
 }  
 
 /*
@@ -112,96 +122,129 @@ function quitarTodo(){
   precioTotal = 0;
   actualizarHTML();
   savelocal();
-}  
-
-/*
-pre: -
-post:-salta cartel detalles compra sino salta cartel no tienes productos
--precioTotal es 0
--Ejecuta funcion actualizarHTML()
-*/
-function comprar(){
-  if(carrito.length >= 1){
-    carrito.splice(0,carrito.length);
-    alertar(`El producto fue comprado, su costo fue de : $${precioTotal}`);
-    precioTotal = 0;
-    actualizarHTML();
-    savelocal();
-    return;
+  //alerta carrito vacio
+  Swal.fire(
+    'Removed!',
+    'Your cart was emptied.',
+    'success'
+    )
   }  
-  alertar(`No tiene productos en el carrito`);
+  
+  /*
+  pre: -
+  post:-Salta cartel detalles compra sino salta cartel no tienes productos
+  -precioTotal es 0
+  -Ejecuta funcion actualizarHTML()
+  */
+ function comprar(){
+   if(carrito.length >= 1){
+     carrito.splice(0,carrito.length);
+     //alerta compra exitosa
+     Swal.fire(
+       'Successful buy!',
+       `It's cost is: $${precioTotal}`,
+       'success'
+       )
+       precioTotal = 0;
+       actualizarHTML();
+       savelocal();
+       return;
+      }  
+      //aleta no hay preoductos en el carrito
+      Swal.fire({
+        icon: 'error',
+    title: 'Oops...',
+    text: 'There are no products in the cart',
+  })
 }  
-
-
-//botones de alerta 
-const textAlert = document.getElementById('texto_alerta');
-const alerts = document.getElementById('alertas');
-
 /*
-pre: texto
-post: alerta con el texto y un boton de cierre
+pre: Productos
+post:-Cargar productos en pantalla 
+-Boton add to cart de cada producto
+-Buscar productos
 */
-function alertar(p){
-  textAlert.innerHTML = "";
-  textAlert.innerHTML += p
-  //alerta y cuando se dese tocar el boton y cerrar
-  alerts.style.display = "block";
-  botonCerrarAlerta.onclick = () =>{
-    alerts.style.display = "none"
+function cargarProductos(productos){
+  divProductos.innerHTML = "";
+  // html de productos
+  for (const producto of productos) {
+    divProductos.innerHTML += `
+    <div class="card producto">
+      <img src="./images/${producto.imagen}" alt="guitar">
+      <div class="name_card">
+        <h4>${producto.marca} ${producto.tipo}</h4>
+        <h4>  ${producto.nombre} </h4>
+      </div>
+      <h5>$${producto.precio}</h5>
+      <button class="btnAgregar" data-id="${producto.id}">Add to cart</button>
+    </div>
+    `;
   }
+
+  //Agregar producto al carrito
+  const botonesAgregar = document.querySelectorAll(".btnAgregar");
+  for (const boton of botonesAgregar) {
+    boton.addEventListener("click", (event) => {
+      event.preventDefault();
+  
+      const idProducto = parseInt(boton.dataset.id);
+      const producto = bd.registroPorId(idProducto);
+    
+      agregar(producto);
+    });
+  }
+
+  //Buscador
+  const inputbuscar = document.getElementById('buscador');
+  const cards = document.querySelectorAll('.card');
+  inputbuscar.addEventListener('input', function filterCards(){
+    const terminoBuscado = (inputbuscar.value).toLowerCase();
+  
+    cards.forEach((card) =>{
+      //Buscar en cada una de las cards sus respectivos nombres 
+      const nameCard = card.querySelector('.name_card').textContent.toLowerCase();
+      //si esos nombres coinsiden con los del terminoBuscado aplica estilos a las respectivas card q estan dentro de cards
+      if (nameCard.includes(terminoBuscado)){
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+
 }
 //-------------------------------------------------------------------------------------
 
-//onclicks de productos
-const botonFenderElectrica = document.getElementById('fender_electrica')
-botonFenderElectrica.onclick = () =>{
-  agregar(fenderElectrica);
-};
-const botonFenderAcutstica = document.getElementById('fender_acustica')
-botonFenderAcutstica.onclick = () =>{
-  agregar(fenderAcustica);
-};
-const botonFenderClasica = document.getElementById('fender_clasica')
-botonFenderClasica.onclick = () =>{
-  agregar(fenderClasica);
-};
-const botonGibsonElectrica = document.getElementById('gibson_electrica')
-botonGibsonElectrica.onclick = () =>{
-  agregar(gibsonElectrica);
-};
-const botonGibsonAcustica = document.getElementById('gibson_acustica')
-botonGibsonAcustica.onclick = () =>{
-  agregar(gibsonAcustica);
-};
-const botonGibsonClasica = document.getElementById('gibson_clasica')
-botonGibsonClasica.onclick = () =>{
-  agregar(gibsonClasica);
-};
+//carrito y su tope
+const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const tope_carrito = 16;
+
+//precio total
+let precioTotal = JSON.parse(localStorage.getItem("precioTotal")) || 0;
+const totalCarrito = document.querySelector("#total_carrito span");
+totalCarrito.innerText = precioTotal;
+
+// elementos
+const divProductos = document.getElementById("productos");
+const carrito_button = document.getElementById('carrito_button');
+const carrito_menu = document.getElementById('carrito_menu');
 const botonComprarCarrito = document.getElementById('button_comprar_carrito')
+const botonQuitarCarrito = document.getElementById('button_quitar_carrito')
+const listaProductos = document.getElementById("lista_productos_carrito");
+
+actualizarHTML();
+
+//Ejecuto base de datos
+const bd = new BaseDeDatos(); 
+
+//Onclicks
+carrito_button.addEventListener('click', () => {
+  carrito_menu.classList.toggle('abierto');
+});  
+
 botonComprarCarrito.onclick = () =>{
   comprar();
 }
-const botonQuitarCarrito = document.getElementById('button_quitar_carrito')
+
 botonQuitarCarrito.onclick = () =>{
   quitarTodo()
 }
-const botonCerrarAlerta = document.getElementById('button_close')
-
-//Buscador
-const inputbuscar = document.getElementById('buscador');
-const cards = document.querySelectorAll('.card');
-
-inputbuscar.addEventListener('input', function filterCards(){
-  const terminoBuscado = (inputbuscar.value).toLowerCase();
-
-  cards.forEach((card) =>{
-    //Buscar en cada una de las cards sus respectivos nombres 
-    const nameCard = card.querySelector('.name_card').textContent.toLowerCase();
-    //si esos nombres coinsiden con los del terminoBuscado aplica estilos a las respectivas card q estan dentro de cards
-    if (nameCard.includes(terminoBuscado)){
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-});

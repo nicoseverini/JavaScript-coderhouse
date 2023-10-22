@@ -179,51 +179,10 @@ main{
   background-color: black;
 }
 
-.alert {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  justify-content: center;
-  align-items: center;
-}
-
-.alert-box {
-  background-color: white;
-  width: 400px;
-  height: 100px;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: nowrap column;
-  font-size: 18px;
-}
-
-.close-button {
-  background-color:#884c24;
-  color: white;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 15px;
-}
-
 .section_one{
   width: 100%;
   height: 900px;
-  background-image: url(./imagenes/guitar-background1.jpg) ;
+  background-image: url(./images/guitar-background1.jpg) ;
   color: white;
   display: flex;
   justify-content: center;
